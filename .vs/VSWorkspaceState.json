@@ -1,0 +1,13 @@
+{
+  "OutputFoldersPerTargetSystem": {
+    "Local Machine": [
+      "build\\vs2022-vcpkg"
+    ]
+  },
+  "ExpandedNodes": [
+    "",
+    "\\photon"
+  ],
+  "SelectedNode": "\\external",
+  "PreviewInSolutionExplorer": false
+}

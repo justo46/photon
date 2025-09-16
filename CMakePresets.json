@@ -1,0 +1,29 @@
+﻿{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "vs2022-vcpkg",
+      "displayName": "VS2022 + vcpkg (x64)",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "toolchainFile": "C:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows",
+        "CMAKE_CXX_STANDARD": "20"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "Debug",
+      "configurePreset": "vs2022-vcpkg",
+      "configuration": "Debug"
+    },
+    {
+      "name": "Release",
+      "configurePreset": "vs2022-vcpkg",
+      "configuration": "Release"
+    }
+  ]
+}
