@@ -1,6 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.23)      # 3.8 is quite old; 3.23+ is safer
 project(photon LANGUAGES CXX)
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 1) Find deps FIRST (uses vcpkg toolchain you pass at configure)
 find_package(Vulkan REQUIRED)
@@ -24,4 +25,8 @@ target_include_directories(imgui PUBLIC
 target_link_libraries(imgui PRIVATE SDL3::SDL3 Vulkan::Vulkan)
 
 # 3) Your app
-add_subdirectory(photon)
+add_subdirectory(src/raytracer)
+add_subdirectory(src/app)
+
+add_executable(photon src/main.cpp)
+target_link_libraries(photon PRIVATE app raytracer)
