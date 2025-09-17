@@ -1,6 +1,7 @@
-add_library(raytracer STATIC
-  raytracer.cpp     
-  raytracer.h
+add_library(raytracer STATIC   
+  vec3.h
+  color.h
+  raytracer.cpp
 )
 
 target_include_directories(raytracer PUBLIC ${CMAKE_SOURCE_DIR}/src)
