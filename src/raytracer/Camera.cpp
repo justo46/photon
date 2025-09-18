@@ -26,7 +26,7 @@ std::vector<uint8_t> Camera::render(const Hittable& world) noexcept
 void Camera::initialize() noexcept
 {
 	image_height = static_cast<int>(image_width / aspect_ratio);
-	image_height = image_height < 1.0 ? 1.0 : image_height;
+	image_height = image_height < 1 ? 1 : image_height;
 
 	center = Point3(0, 0, 0);
 
