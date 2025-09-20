@@ -1,12 +1,23 @@
 #pragma once
 
-#include "math_utils.h"
+#include "Ray.h"
+#include "Interval.h"
+#include "Vec3.h"
+
+class Material;
 
 class HitRecord {
 public:
 	Point3 p;
 	Vec3 normal;
-	double t;
+	std::shared_ptr<Material> mat;
+	double t{0.0};
+	bool front_face{false};
+
+	void set_face_normal(const Ray& r, const Vec3& outward_normal) noexcept {
+		front_face = dot(r.direction(), outward_normal) < 0;
+		normal = front_face ? outward_normal : -outward_normal;
+	}
 };
 
 class Hittable {

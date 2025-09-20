@@ -1,19 +1,26 @@
 #pragma once
 
-#include "math_utils.h"
 #include "Hittable.h"
 #include "HittableList.h"
 #include "Sphere.h"
 #include "Camera.h"
+#include "Materials/AllMaterials.h"
 
-std::vector<uint8_t> raytrace() {
+[[nodiscard]] std::vector<uint8_t> raytrace(int width, int height) {
 	HittableList world;
 
-	world.add(std::make_shared<Sphere>(Point3(0, 0, -1), 0.5));
-	world.add(std::make_shared<Sphere>(Point3(0, -100.5, -1), 100));
+	auto material_ground = std::make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
+	auto material_center = std::make_shared<Lambertian>(Color(0.1, 0.2, 0.5));
+	auto material_left = std::make_shared<Dielectric>(1.50);
+	auto material_bubble = std::make_shared<Dielectric>(1.00 / 1.5);
+	auto material_right = std::make_shared<Metal>(Color(0.8, 0.6, 0.2), 1.0);
 
-	Camera cam;
-	cam.aspect_ratio = 16.0 / 9.0;
-	cam.image_width = 1280;
+	world.add(std::make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0, material_ground));
+	world.add(std::make_shared<Sphere>(Point3(0.0, 0.0, -1.2), 0.5, material_center));
+	world.add(std::make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), 0.5, material_left));
+	world.add(std::make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), 0.4, material_bubble));
+	world.add(std::make_shared<Sphere>(Point3(1.0, 0.0, -1.0), 0.5, material_right));
+
+	Camera cam(width, 16.0 / 9.0, 500, 500);
 	return cam.render(world);
 }

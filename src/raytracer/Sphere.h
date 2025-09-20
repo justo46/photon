@@ -1,11 +1,11 @@
 #pragma once
 
-#include "hittable.h"
-#include "vec3.h"
+#include "Hittable.h"
+#include "Vec3.h"
 
 class Sphere : public Hittable {
 public:
-	Sphere(Point3 cen, double r) noexcept : center(cen), radius(r) {}
+	Sphere(const Point3& cen, double r, std::shared_ptr<Material> mat) noexcept : center(cen), radius(std::fmax(0,r)), mat(mat) {}
 
 	bool hit(const Ray& r, Interval ray_t, HitRecord& rec) const noexcept override {
 		Vec3 oc = center - r.origin();
@@ -30,7 +30,9 @@ public:
 
 		rec.t = root;
 		rec.p = r.at(rec.t);
-		rec.normal = (rec.p - center) / radius;
+		Vec3 outward_normal = (rec.p - center) / radius;
+		rec.set_face_normal(r, outward_normal);
+		rec.mat = mat;
 
 		return true;
 	}
@@ -38,4 +40,5 @@ public:
 private:
 	Point3 center;
 	double radius;
+	std::shared_ptr<Material> mat;
 };

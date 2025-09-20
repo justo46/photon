@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Hittable.h"
-#include "math_utils.h"
+#include "Interval.h"
+#include "Ray.h"
 
 #include <vector>
 

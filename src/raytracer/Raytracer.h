@@ -1,3 +1,3 @@
 #pragma once
 
-std::vector<uint8_t> raytrace();
+[[nodiscard]] std::vector<uint8_t> raytrace(int width, int height);

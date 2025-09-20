@@ -1,12 +1,12 @@
 #pragma once 
 
-#include <limits>
+#include "math_utils.h"
 
 class Interval {
 public:
     double min, max;
 
-    constexpr Interval() noexcept : min(+std::numeric_limits<double>::infinity()), max(-std::numeric_limits<double>::infinity()) {}
+    constexpr Interval() noexcept : min(+infinity), max(-infinity) {}
     constexpr Interval(double min, double max) noexcept : min(min), max(max) {}
 
     [[nodiscard]] constexpr bool isEmpty() const noexcept { return min > max; }
@@ -20,10 +20,15 @@ public:
         return min < value && value < max;
     }
 
+    [[nodiscard]] constexpr double clamp(double value) const noexcept {
+        if (value < min) return min;
+        if (value > max) return max;
+        return value;
+    }
+
 	static const Interval empty;
 	static const Interval universe;
 };
 
-inline const Interval Interval::empty(+std::numeric_limits<double>::infinity(), -std::numeric_limits<double>::infinity());
-
-inline const Interval Interval::universe(-std::numeric_limits<double>::infinity(), +std::numeric_limits<double>::infinity());
+inline constexpr Interval Interval::empty(+infinity, -infinity);
+inline constexpr Interval Interval::universe(-infinity, +infinity);

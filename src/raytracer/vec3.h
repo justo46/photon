@@ -1,7 +1,6 @@
 #pragma once
 
-#include <cmath>
-#include <iostream>
+#include "math_utils.h"
 
 class Vec3 {
 public:
@@ -54,8 +53,22 @@ public:
 		return std::sqrt(length_squared());
 	}
 
-	constexpr Vec3& normalize() noexcept {
-		return *this /= length();
+	[[nodiscard]] bool near_zero() const noexcept {
+		// Return true if the vector is close to zero in all dimensions.
+		constexpr auto s = 1e-8;
+		return (std::fabs(e[0]) < s) && (std::fabs(e[1]) < s) && (std::fabs(e[2]) < s);
+	}
+
+	void normalize() noexcept {
+		*this /= length();
+	}
+
+	static Vec3 random() noexcept {
+		return Vec3{ random_double(), random_double(), random_double() };
+	}
+
+	static Vec3 random(double min, double max) noexcept {
+		return Vec3{ random_double(min, max), random_double(min, max), random_double(min, max) };
 	}
 };
 
@@ -101,6 +114,35 @@ inline constexpr Vec3 operator/(Vec3 a, const double t) noexcept {
 				 a.e[0] * b.e[1] - a.e[1] * b.e[0] };
 }
 
-[[nodiscard]] inline constexpr Vec3 unit_vector(Vec3 v) noexcept {
+[[nodiscard]] inline Vec3 unit_vector(Vec3 v) noexcept {
 	return v /= std::sqrt(v.length_squared());
+}
+
+[[nodiscard]] inline Vec3 random_unit_vector() noexcept {
+	while (true) {
+		auto p = Vec3::random(-1, 1);
+		auto lensq = p.length_squared();
+		if (1e-160 < lensq && lensq <= 1)
+			return p / sqrt(lensq);
+
+	}
+}
+
+[[nodiscard]] inline Vec3 random_on_hemisphere(const Vec3& normal) noexcept {
+	Vec3 on_unit_sphere = random_unit_vector();
+	if (dot(on_unit_sphere, normal) > 0.0) // In the same hemisphere as the normal
+		return on_unit_sphere;
+	else
+		return -on_unit_sphere;
+}
+
+[[nodiscard]] inline Vec3 reflect(const Vec3& v, const Vec3& n) noexcept {
+	return v - 2 * dot(v, n) * n;
+}
+
+[[nodiscard]] inline Vec3 refract(const Vec3& uv, const Vec3& n, double etai_over_etat) noexcept {
+	auto cos_theta = std::fmin(dot(-uv, n), 1.0);
+	Vec3 r_out_perp = etai_over_etat * (uv + cos_theta * n);
+	Vec3 r_out_parallel = -std::sqrt(std::fabs(1.0 - r_out_perp.length_squared())) * n;
+	return r_out_perp + r_out_parallel;
 }
