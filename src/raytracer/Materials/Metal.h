@@ -6,7 +6,7 @@ public:
 
 	bool scatter(const Ray& r_in, const HitRecord& rec, Color& attenuation, Ray& scattered) const noexcept override {
 		Vec3 reflected = reflect(r_in.direction(), rec.normal);
-		reflected = unit_vector(reflected + fuzz * random_unit_vector());
+		reflected = unit_vector(reflected + (fuzz * random_unit_vector()));
 		scattered = Ray(rec.p, reflected);
 		attenuation = albedo;
 		return (dot(scattered.direction(), rec.normal) > 0);
