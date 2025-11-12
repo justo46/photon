@@ -22,6 +22,6 @@
 	world.add(std::make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), 0.4, material_bubble));
 	world.add(std::make_shared<Sphere>(Point3(1.0, 0.0, -1.0), 0.5, material_right));
 
-	Camera cam(width, 16.0 / 9.0, 100, 50, 20.0, Point3(-2, 2, 1), Point3(0, 0, -1), Vec3(0, 1, 0), 10.0, 3.4);
+	Camera cam(width, 16.0 / 9.0, 10, 10, 20.0, Point3(-2, 2, 1), Point3(0, 0, -1), Vec3(0, 1, 0), 10.0, 3.4);
 	return cam.render(world);
 }
